@@ -8,7 +8,7 @@ from task.models.message import Message
 from task.models.role import Role
 
 
-class DialClient:
+class CustomDialClient(BaseClient):
     _endpoint: str
     _api_key: str
 
