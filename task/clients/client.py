@@ -11,23 +11,22 @@ from task.models.role import Role
 class DialClient(BaseClient):
 
     def __init__(self, deployment_name: str):
-        super().__init__(deployment_name)
-        load_dotenv()
+        super().__init__(deployment_name)        
         self.api_key = os.getenv("DIAL_API_KEY", "")
         self.base_url = os.getenv("DIAL_API_BASE", "")
         
         # Documentation: https://pypi.org/project/aidial-client/ (here you can find how to create and use these clients)
         # 1. Create Dial client
-        dial_client = Dial(api_key=self.api_key, base_url=self.base_url)
+        self._client = Dial(api_key=self.api_key, base_url=self.base_url)
         
         # 2. Create AsyncDial client
-        async_dial_client = AsyncDial(api_key=self.api_key, base_url=self.base_url)
-        self.client = dial_client
-        self.async_client = async_dial_client
+        self._async_client = AsyncDial(api_key=self.api_key, base_url=self.base_url)
+        self.client = self._client
+        self.async_client = self._async_client
 
     def get_completion(self, messages: list[Message]) -> Message:        
         # 1. Create chat completions with client
-        response = self.client.create_chat_completion(
+        response = self._client.chat.completions.create(
             deployment_name=self._deployment_name,
             stream=False,
             messages=[message.to_dict() for message in messages]
@@ -44,7 +43,8 @@ class DialClient(BaseClient):
        
         # 1. Create chat completions with async client
         #    Hint: don't forget to add `stream=True` in call.
-        chunks_response = await self.async_client.create_chat_completion(
+        
+        chunks_response = await self._async_client.chat.completions.create(
             deployment_name=self._deployment_name,
             stream=True,
             messages=[message.to_dict() for message in messages]

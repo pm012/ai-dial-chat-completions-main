@@ -52,6 +52,7 @@ By completing this task, you will learn:
    │   └── custom_client.py  🚧 TODO: Implement methods
    ├── app.py                🚧 TODO: Implement main logic
    └── constants.py          ✅ Update API key
+   └── .env
    ```
 
 ## 📝 Your Tasks

@@ -7,17 +7,19 @@ from task.models.conversation import Conversation
 from task.models.message import Message
 from task.models.role import Role
 
+from dotenv import load_dotenv
+
 
 async def start(stream: bool) -> None:
    
     # Standard DialClient by default
-    dial_client = DialClient(deployment_name="gpt-4-turbo-2024-04-09")
+    dial_client = DialClient(deployment_name="deepseek-r1")
     print("Select client to use: 1. CustomDialClient  2.(or any other symbol(s)) DialClient")
     client_choice = input('>>> ').strip()
     # 1.1. Create DialClient
     if client_choice == '1':
         # 1.2. Create CustomDialClient
-        dial_client = CustomDialClient(deployment_name="gpt-4-turbo-2024-04-09")
+        dial_client = CustomDialClient(deployment_name="deepseek-r1")
 
         
     # (you can get available deployment_name via https://ai-proxy.lab.epam.com/openai/models
@@ -73,7 +75,7 @@ async def start(stream: bool) -> None:
         conversation.add_message(response_message)
     # 9. Test it with DialClient and CustomDialClient
     # 10. In CustomDialClient add print of whole request and response to see what you send and what you get in response  
-
+load_dotenv()
 asyncio.run(
     start(True)
 )
